@@ -209,12 +209,20 @@ export default function AboutPage() {
                 Join the<br/>Pepowl.
               </h2>
               <div className="flex flex-wrap justify-center gap-6">
-                <Link 
-                  href="/menu"
-                  className="px-12 py-6 bg-brand-yellow text-brand-red font-black uppercase tracking-widest rounded-full hover:scale-105 transition-transform shadow-2xl flex items-center justify-center"
+                <button 
+                  onClick={() => {
+                    if (typeof window !== "undefined") {
+                      window.scrollTo(0, 0);
+                      if ((window as any).lenis) {
+                        (window as any).lenis.scrollTo(0, { immediate: true });
+                      }
+                    }
+                    router.push('/menu');
+                  }}
+                  className="px-12 py-6 bg-brand-yellow text-brand-red font-black uppercase tracking-widest rounded-full hover:scale-105 transition-transform shadow-2xl flex items-center justify-center cursor-pointer"
                 >
                   Explore Menu
-                </Link>
+                </button>
                 <Link 
                   href="https://maps.app.goo.gl/33vpxSk7CUysWk7C7"
                   target="_blank"
