@@ -2,9 +2,27 @@
 
 import { ReactNode, useEffect } from "react";
 import Lenis from "lenis";
+import { usePathname } from "next/navigation";
 
 export const SmoothScroll = ({ children }: { children: ReactNode }) => {
+  const pathname = usePathname();
+
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+      }
+      window.scrollTo(0, 0);
+      if ((window as any).lenis) {
+        (window as any).lenis.scrollTo(0, { immediate: true });
+      }
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.scrollTo(0, 0);
+    }
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
