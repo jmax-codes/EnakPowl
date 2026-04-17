@@ -9,7 +9,7 @@ export const CTASection = () => {
   return (
     <section id="cta" className="relative h-[60vh] bg-brand-yellow overflow-hidden flex items-center justify-center">
       <div className="relative z-10 text-center px-8">
-        <h2 className="text-6xl md:text-9xl font-bold tracking-tighter uppercase mb-12 text-brand-red italic">
+        <h2 className="max-md:text-[11.5vw] max-md:leading-none text-6xl md:text-9xl font-bold tracking-tighter uppercase mb-12 text-brand-red italic">
           Join the <br /> 
           <span className="text-white">PowlNation</span>
         </h2>
@@ -22,6 +22,15 @@ export const CTASection = () => {
           Get Your Bowl
         </motion.button>
       </div>
+
+      <style jsx>{`
+        @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+          h2 {
+            font-size: 6.5rem !important;
+            line-height: 0.9 !important;
+          }
+        }
+      `}</style>
     </section>
   );
 };

@@ -46,3 +46,167 @@ canvas {
     -webkit-text-stroke: 3px rgba(255, 255, 255, 0.4);
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE & TABLET OVERRIDES — max-width: 1024px
+   These rules ONLY apply to mobile/tablet viewports.
+   Desktop styles above remain 100% untouched.
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+  /* Hero foreground text readability over moving bowl images */
+  .mobile-hero-text {
+    text-shadow:
+      0 2px 16px rgba(0, 0, 0, 0.6),
+      0 4px 32px rgba(196, 30, 58, 0.4);
+    position: relative;
+    z-index: 15;
+  }
+
+  /* Prevent horizontal overflow from large hero text */
+  body {
+    overflow-x: hidden;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   STRICT TABLET OVERRIDE (768px - 1024px)
+   Switches to mobile-style layout if logo overlaps links.
+   ═══════════════════════════════════════════════════════════════ */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .nav-chat-mobile {
+    display: flex !important;
+  }
+  .nav-links-desktop {
+    display: none !important;
+  }
+  .nav-chat-desktop {
+    display: none !important;
+  }
+  
+  /* Hero Bowl Scaling */
+  .hero-bowl-front {
+    width: 85vw !important;
+    max-width: none !important;
+  }
+  .hero-bowl-top {
+    width: 85vw !important;
+    max-width: none !important;
+  }
+
+}
+
+/* ============================================
+   TABLET PORTRAIT — Block A
+   (768px–1024px, orientation: portrait)
+   iPad Mini / Air / standard / Pro 11" / Pro 12.9"
+   ============================================ */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+  .hero-fix-padding-cut {
+    padding-left: 5vw !important;
+    padding-right: 5vw !important;
+    overflow: visible !important;
+  }
+  .hero-fix-text-cut {
+    font-size: 6vw !important; /* Larger than mobile, specifically for portrait */
+    max-width: 100% !important;
+    white-space: normal !important;
+    line-height: 1 !important;
+  }
+  .hero-fix-p-cut {
+    font-size: 2.5vw !important;
+    max-width: 80% !important;
+    width: auto !important;
+  }
+
+  /* About Page - Sisters in Soul Portrait Stack */
+  main section:nth-of-type(4) {
+    padding-top: 64px !important;
+    padding-bottom: 64px !important;
+  }
+  
+  main section:nth-of-type(4) > div.grid {
+    grid-template-columns: 1fr !important;
+    gap: 42px !important;
+  }
+
+  /* Founders Title: Sisters In Soul */
+  main section:nth-of-type(4) h2 {
+    font-size: 14vw !important;
+    line-height: 0.85 !important;
+  }
+
+  /* Founders Bio Text */
+  main section:nth-of-type(4) .space-y-6 p {
+    font-size: 1.35rem !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Founders Social Links */
+  main section:nth-of-type(4) .flex.flex-wrap.gap-4 {
+    flex-direction: column !important;
+    margin-top: 0 !important;
+  }
+  
+  main section:nth-of-type(4) a {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
+
+/* ============================================
+   TABLET LANDSCAPE — Block B
+   (900px–1366px, orientation: landscape)
+   iPad Mini / Air / standard / Pro 11" / Pro 12.9"
+   ============================================ */
+@media (min-width: 900px) and (max-width: 1366px) and (orientation: landscape) {
+  .hero-fix-padding-cut {
+    padding-left: 5vw !important;
+    padding-right: 5vw !important;
+    overflow: visible !important;
+  }
+  .hero-fix-text-cut {
+    font-size: 3vw !important; /* Stays identical to the small landscape fix */
+    max-width: 100% !important;
+    white-space: normal !important;
+  }
+  .hero-fix-p-cut {
+    font-size: 1.5vw !important;
+    max-width: 80% !important;
+    width: auto !important;
+  }
+
+  /* Hero Specific Tablet Landscape Tweaks */
+  
+  /* 1. AUTHENTIC TASTE Fix Overlap & Delay */
+  .perspective-\[1000px\] > div:nth-child(2) {
+    padding-top: 20vh !important;
+  }
+  .perspective-\[1000px\] > div:nth-child(2) .hero-h1-tablet {
+    font-size: 9.5vw !important;
+  }
+  .perspective-\[1000px\] > div:nth-child(2) [style*="transform"] {
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  /* 2. YOUNG PEPOWL'S - Position maintained */
+  .perspective-\[1000px\] > div:nth-child(5) {
+    padding-top: 38vh !important;
+  }
+
+  /* 3. SPICE. FLAVOR. SATISFACTION. - Shifted DOWN slightly per request */
+  .perspective-\[1000px\] > div:nth-child(8) {
+    padding-top: 52vh !important;
+  }
+  
+  /* Smooth lag effect to "delay" the scroll-driven entry */
+  .perspective-\[1000px\] > div:nth-child(8) [style*="transform"] {
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+}
+@media (max-width: 768px) {
+  /* Hide the dotted gold navbar border on mobile — it clips awkwardly */
+  .navbar-dotted-border {
+    display: none;
+  }
+}

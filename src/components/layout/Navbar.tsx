@@ -146,7 +146,30 @@ export const Navbar = () => {
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className={`fixed top-0 left-0 w-full z-[80] flex justify-between items-center p-6 md:px-8 transition-colors duration-300`}
       >
-        <div className="hidden md:flex gap-4 items-center">
+        {/* Mobile-only: Contact icon (left side) */}
+        <button
+          onClick={(e) => navigateTo("contact", e)}
+          title="Contact"
+          className="nav-chat-mobile flex md:hidden w-11 h-11 items-center justify-center rounded-full transition-all hover:opacity-70 active:scale-95 cursor-pointer"
+          style={{
+            color: "#1a1a1a",
+            background: "linear-gradient(145deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%)",
+            backdropFilter: "blur(50px) saturate(220%) brightness(1.15)",
+            WebkitBackdropFilter: "blur(50px) saturate(220%) brightness(1.15)",
+            border: "0.5px solid rgba(255, 255, 255, 0.5)",
+            boxShadow: `
+              0 15px 35px rgba(0, 0, 0, 0.15),
+              inset 0 2px 2px rgba(255, 255, 255, 0.3),
+              inset 0 8px 15px rgba(255, 255, 255, 0.1),
+              inset 0 -4px 10px rgba(0, 0, 0, 0.05)
+            `,
+          }}
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 relative z-10 antialiased">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+        </button>
+        <div className="nav-links-desktop hidden md:flex gap-4 items-center">
           {[
             { name: "ABOUT", id: "about" },
             { name: "SIGNATURES", id: "signatures" },
@@ -164,7 +187,7 @@ export const Navbar = () => {
         </div>
 
         {/* Top Center Logo with Perfectly Flush White Circular Border */}
-        <div className="absolute left-[50%] top-1.5 transform -translate-x-1/2">
+        <div className="absolute left-[50%] max-md:top-4 top-1.5 transform -translate-x-1/2">
           <button 
             onClick={(e) => navigateTo("home", e)}
             className="hover:opacity-70 active:scale-95 transition-all block w-15 h-15 md:w-22 md:h-22 rounded-full border-[3px] border-white shadow-xl overflow-hidden relative cursor-pointer"
@@ -183,7 +206,7 @@ export const Navbar = () => {
           <button
             onClick={(e) => navigateTo("contact", e)}
             title="Contact"
-            className="hidden md:flex w-12 h-12 items-center justify-center rounded-full transition-all hover:opacity-70 active:scale-95 group relative overflow-hidden cursor-pointer"
+            className="nav-chat-desktop hidden md:flex w-12 h-12 items-center justify-center rounded-full transition-all hover:opacity-70 active:scale-95 group relative overflow-hidden cursor-pointer"
             style={{
               color: "#1a1a1a",
               background: "linear-gradient(145deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%)",
@@ -206,7 +229,7 @@ export const Navbar = () => {
           {/* Menu button */}
           <button
             onClick={() => setIsOpen(true)}
-            className="hidden md:flex w-12 h-12 items-center justify-center rounded-full transition-all hover:opacity-70 active:scale-95 group relative overflow-hidden"
+            className="flex w-11 h-11 md:w-12 md:h-12 items-center justify-center rounded-full transition-all hover:opacity-70 active:scale-95 group relative overflow-hidden cursor-pointer"
             style={{
               color: "#1a1a1a",
               background: "linear-gradient(145deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%)",

@@ -108,14 +108,14 @@ export const FloatingActions = () => {
           variants={{ visible: { y: 0 }, hidden: { y: "150px" } }}
           animate={navHidden ? "hidden" : "visible"}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute bottom-8 left-8 pointer-events-auto"
+          className="absolute bottom-6 left-6 max-md:right-[144px] md:bottom-8 md:left-8 pointer-events-auto"
         >
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => openOrder('left')}
             style={{ backgroundColor: btnBgHex, color: btnTextHex }}
-            className="px-8 py-3 rounded-full font-black uppercase tracking-tighter text-sm md:text-base shadow-xl transition-all duration-300 cursor-pointer"
+            className="max-md:w-full max-md:h-[56px] max-md:py-0 px-8 py-4 md:py-3 rounded-full font-black uppercase tracking-tighter text-sm md:text-base shadow-xl transition-all duration-300 cursor-pointer min-h-[44px] flex items-center justify-center"
           >
             Buy Now
           </motion.button>
@@ -123,28 +123,59 @@ export const FloatingActions = () => {
 
         {/* Bottom Right: Icons */}
         <div
-          className="absolute bottom-8 right-8 flex gap-6 pointer-events-auto transition-all duration-500"
+          className="absolute bottom-6 right-6 md:bottom-8 md:right-8 flex max-md:gap-2 max-md:h-[56px] max-md:items-center gap-4 md:gap-6 pointer-events-auto transition-all duration-500"
         >
           <motion.button
             whileHover={{ opacity: 0.7 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => router.push('/menu')}
             style={{ color: iconColorHex }}
-            className="flex items-center justify-center transition-all duration-300 cursor-pointer"
+            className="flex items-center justify-center transition-all duration-300 cursor-pointer max-md:p-0 p-3 md:p-0 min-w-[44px] min-h-[44px]"
           >
-            <RiceBowlIcon className="w-8 h-8 md:w-10 md:h-10 drop-shadow-lg" />
+            <RiceBowlIcon className="w-8 h-8 max-md:w-[36px] max-md:h-[36px] md:w-10 md:h-10 drop-shadow-lg" />
           </motion.button>
           <motion.button
             whileHover={{ opacity: 0.7 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => openOrder('right')}
             style={{ color: iconColorHex }}
-            className="flex items-center justify-center transition-all duration-300 cursor-pointer"
+            className="flex items-center justify-center transition-all duration-300 cursor-pointer max-md:p-0 p-3 md:p-0 min-w-[44px] min-h-[44px]"
           >
-            <ShoppingBasket className="w-8 h-8 md:w-10 md:h-10 drop-shadow-lg" />
+            <ShoppingBasket className="w-8 h-8 max-md:w-[36px] max-md:h-[36px] md:w-10 md:h-10 drop-shadow-lg" />
           </motion.button>
         </div>
       </motion.div>
+
+      <style jsx>{`
+        @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+          /* Targeting the Bottom Left Container */
+          div.absolute.bottom-6.left-6, div.absolute.bottom-8.left-8 {
+            bottom: 2.5rem !important;
+            left: 2.5rem !important;
+          }
+          /* Targeting the Buy Now Button */
+          button {
+            height: 75px !important;
+            padding-left: 2rem !important;
+            padding-right: 2rem !important;
+            font-size: 1.75rem !important;
+            transform: scale(1.1) !important;
+            transform-origin: left bottom !important;
+          }
+          /* Targeting the Bottom Right Icons Container */
+          div.absolute.bottom-6.right-6, div.absolute.bottom-8.right-8 {
+            bottom: 2.5rem !important;
+            right: 2.5rem !important;
+            gap: 1rem !important; /* Tighten Gap */
+          }
+          /* Targeting the Icons size specifically */
+          svg {
+            width: 70px !important;
+            height: 70px !important;
+            transform: scale(1.1) !important;
+          }
+        }
+      `}</style>
     </>
   );
 };

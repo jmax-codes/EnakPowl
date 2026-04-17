@@ -1,13 +1,32 @@
 "use client";
 
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import { Instagram, ArrowUpRight, Heart, Sparkles, Users } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { ReactNode } from "react";
+
+// Mobile-specific word reveal component to follow Rules of Hooks
+const MobileWord = ({ children, index, total, progress }: { children: ReactNode, index: number, total: number, progress: any }) => {
+  const start = index / total;
+  const end = (index + 1) / total;
+  const opacity = useTransform(progress, [start, end], [0.18, 100]);
+  return (
+    <motion.span 
+      style={{ 
+        opacity,
+        display: "inline-block",
+        marginRight: "0.25em"
+      }}
+    >
+      {children}
+    </motion.span>
+  );
+};
 
 // Floating text component for interactive scroll
 const FloatingText = ({ children, speed = 1, className = "" }: { children: React.ReactNode, speed?: number, className?: string }) => {
@@ -18,10 +37,12 @@ const FloatingText = ({ children, speed = 1, className = "" }: { children: React
   });
   
   const y = useTransform(scrollYProgress, [0, 1], [100 * speed, -100 * speed]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+  const opacity = useTransform(scrollYProgress, [0, 0.15, 0.8, 1], [0, 1, 1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8]);
+  const rotate = useTransform(scrollYProgress, [0, 1], [-5 * speed, 5 * speed]);
 
   return (
-    <motion.div ref={ref} style={{ y, opacity }} className={className}>
+    <motion.div ref={ref} style={{ y, opacity, scale, rotate }} className={className}>
       {children}
     </motion.div>
   );
@@ -35,14 +56,44 @@ export default function AboutPage() {
     offset: ["start start", "end end"]
   });
 
+  // Mobile/tablet layout detection
+  const [isCompact, setIsCompact] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 1024px)');
+    setIsCompact(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsCompact(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
   // Hero transformations
   const heroY = useTransform(scrollYProgress, [0, 0.2], ["0vh", "20vh"]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
   const heroScale = useTransform(scrollYProgress, [0, 0.2], [1, 0.9]);
   
-  // Parallax elements for the story section
+  // Parallax + 3D elements for the story section
   const storyX1 = useTransform(scrollYProgress, [0.1, 0.4], ["-20%", "0%"]);
   const storyX2 = useTransform(scrollYProgress, [0.1, 0.4], ["20%", "0%"]);
+  
+  // New 3D Transforms specifically for Awwwards-style mobile depth
+  const storyRotateY = useTransform(scrollYProgress, [0.1, 0.4], [15, 0]);
+  const storyRotateX = useTransform(scrollYProgress, [0.1, 0.4], [10, 0]);
+  const storyRotateYReverse = useTransform(scrollYProgress, [0.1, 0.4], [-15, 0]);
+  const storyZ = useTransform(scrollYProgress, [0.1, 0.4], [-100, 0]);
+  const storyScale = useTransform(scrollYProgress, [0.1, 0.3, 0.45], [0.8, 1.05, 1]);
+  
+  // Mobile-specific vertical movement to deviate from desktop horizontal slide
+  const storyY1 = useTransform(scrollYProgress, [0.1, 0.4], ["100px", "0px"]);
+  const storyY2 = useTransform(scrollYProgress, [0.1, 0.4], ["150px", "0px"]);
+  const storyOpacity = useTransform(scrollYProgress, [0.08, 0.22], [0, 1]); 
+  
+  // Word reveal transforms for mobile Vision text
+  const visionTextProgress = useTransform(scrollYProgress, [0.1, 0.17], [0, 1]);
+  
+  // Classy mobile vertical reveal logic (No sideways tilt)
+  const classyY1 = useTransform(scrollYProgress, [0.1, 0.35], ["140px", "0px"]);
+  const classyY2 = useTransform(scrollYProgress, [0.12, 0.37], ["180px", "0px"]);
+  const classyScale = useTransform(scrollYProgress, [0.1, 0.4], [0.94, 1]);
 
   return (
     <SmoothScroll>
@@ -77,24 +128,55 @@ export default function AboutPage() {
         </section>
 
         {/* The Vision - Parallax Content SURPASSING the Hero (Contact Style) */}
-        <section className="relative min-h-screen py-32 bg-brand-red flex flex-col items-center justify-center px-6 md:px-24 z-10 shadow-[0_-50px_100px_rgba(0,0,0,0.5)]">
+        <section className="relative min-h-screen py-32 bg-brand-red flex flex-col items-center justify-center px-6 md:px-24 z-10 shadow-[0_-50px_100px_rgba(0,0,0,0.5)] perspective-[1200px]">
           <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-24 items-center">
-            <motion.div style={{ x: storyX1 }} className="space-y-8">
+            <motion.div 
+              style={{ 
+                x: isCompact ? 0 : storyX1,
+                y: isCompact ? classyY1 : 0,
+                rotateY: 0,
+                rotateX: 0,
+                z: isCompact ? 0 : storyZ,
+                scale: isCompact ? classyScale : 1,
+                opacity: isCompact ? storyOpacity : 1
+              }} 
+              className="space-y-8"
+            >
               <h2 className="text-5xl md:text-8xl font-black text-brand-yellow uppercase leading-none tracking-tighter italic">
                 The<br/>Vision.
               </h2>
-              <p className="text-xl md:text-2xl font-medium text-white/80 leading-relaxed italic">
-                Enak Powl was born from a hunger for more—more flavor, more soul, and more authenticity in the fast-paced life of our generation.
-              </p>
+              <div className="text-xl md:text-2xl font-medium text-white/80 leading-relaxed italic">
+                {isCompact ? (
+                  "Enak Powl was born from a hunger for more—more flavor, more soul, and more authenticity in the fast-paced life of our generation."
+                    .split(" ")
+                    .map((word, i, arr) => (
+                      <MobileWord key={i} index={i} total={arr.length} progress={visionTextProgress}>
+                        {word}
+                      </MobileWord>
+                    ))
+                ) : (
+                  "Enak Powl was born from a hunger for more—more flavor, more soul, and more authenticity in the fast-paced life of our generation."
+                )}
+              </div>
             </motion.div>
-            <motion.div style={{ x: storyX2 }} className="relative aspect-square">
+            <motion.div 
+              style={{ 
+                x: isCompact ? 0 : storyX2,
+                y: isCompact ? classyY2 : 0,
+                rotateY: 0,
+                z: isCompact ? 0 : storyZ,
+                scale: isCompact ? classyScale : 1,
+                opacity: isCompact ? storyOpacity : 1
+              }} 
+              className="relative aspect-square"
+            >
                <div className="absolute inset-0 bg-white/5 rounded-[4rem] border border-white/10 flex items-center justify-center group overflow-hidden shadow-2xl backdrop-blur-sm">
                   {/* Tilted Background Text — matching reference */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                    <p className="text-white/10 text-[12vw] md:text-[180px] font-black uppercase tracking-tighter -rotate-12 leading-[0.7] -translate-x-12 -translate-y-8">
+                    <p className="text-white/10 text-[27vw] md:text-[180px] font-black uppercase tracking-tighter -rotate-12 leading-[0.7] -translate-x-12 -translate-y-8">
                       ENAK
                     </p>
-                    <p className="text-white/10 text-[12vw] md:text-[180px] font-black uppercase tracking-tighter -rotate-12 leading-[0.7] translate-x-12 translate-y-8">
+                    <p className="text-white/10 text-[27vw] md:text-[180px] font-black uppercase tracking-tighter -rotate-12 leading-[0.7] translate-x-12 translate-y-8">
                       POWL
                     </p>
                   </div>
@@ -112,19 +194,19 @@ export default function AboutPage() {
 
         {/* Scrollytelling Values Section - FIXED OVERFLOW */}
         <section className="relative min-h-[150vh] py-40 bg-brand-yellow text-brand-red flex flex-col items-center px-6 overflow-hidden">
-          <div className="sticky top-1/2 -translate-y-1/2 text-center w-full z-10">
+          <div className="sticky top-1/2 -translate-y-1/2 text-center w-full z-10 px-4">
             <FloatingText speed={2.5}>
-              <h3 className="text-7xl md:text-[15vw] font-black uppercase tracking-tighter leading-[0.8] mb-8">
+              <h3 className="text-5xl md:text-[15vw] font-black uppercase tracking-tighter leading-[0.8] mb-8">
                 Crafted.
               </h3>
             </FloatingText>
             <FloatingText speed={1.8}>
-              <h3 className="text-7xl md:text-[15vw] font-black uppercase tracking-tighter leading-[0.8] mb-8 italic outline-text-red">
+              <h3 className="text-5xl md:text-[15vw] font-black uppercase tracking-tighter leading-[0.8] mb-8 italic outline-text-red">
                 Soulful.
               </h3>
             </FloatingText>
             <FloatingText speed={1.2}>
-              <h3 className="text-7xl md:text-[15vw] font-black uppercase tracking-tighter leading-[0.8]">
+              <h3 className="text-6xl md:text-[15vw] font-black uppercase tracking-tighter leading-[0.8]">
                 Authentic.
               </h3>
             </FloatingText>
@@ -235,12 +317,12 @@ export default function AboutPage() {
         </section>
 
         {/* Bottom Contact Section */}
-        <div className="w-full py-24 bg-brand-red text-center border-t border-white/10 relative z-20">
-          <p className="text-brand-yellow/60 text-xs font-bold tracking-[0.4em] uppercase mb-4">Want to have a website like this?</p>
+        <div className="w-full py-24 bg-brand-red text-center border-t border-white/10 relative z-20 px-6">
+          <p className="text-brand-yellow/60 text-[10px] md:text-xs font-bold tracking-[0.4em] uppercase mb-4">Want to have a website like this?</p>
           <a 
             href="https://api.whatsapp.com/send/?phone=6287868898855" 
             target="_blank"
-            className="text-3xl md:text-5xl font-black text-white hover:text-brand-yellow transition-all uppercase tracking-tighter"
+            className="text-2xl md:text-5xl font-black text-white hover:text-brand-yellow transition-all uppercase tracking-tighter"
           >
             Contact +62 87868898855
           </a>

@@ -17,7 +17,7 @@ const testimonials = [
   {
     name: "Andy Lai Chun Kit",
     role: "Student",
-    content: "EnakPowl is the only brand that actually understands what we like."
+    content: "EnakPowl is the brand that actually understands what we like."
   }
 ];
 
@@ -32,7 +32,7 @@ export const TestimonialSection = () => {
   }, []);
 
   return (
-    <section id="testimonials" className="h-screen bg-brand-red text-white flex flex-col justify-center px-8 md:px-24 overflow-hidden relative">
+    <section id="testimonials" className="max-md:h-[65vh] h-screen bg-brand-red text-white flex flex-col justify-center px-8 md:px-24 overflow-hidden relative">
       <h3 className="text-sm uppercase tracking-widest text-brand-yellow mb-12">Testimonials</h3>
       
       <div className="relative h-[400px]">
@@ -45,10 +45,10 @@ export const TestimonialSection = () => {
             transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
             className="absolute inset-0 flex flex-col justify-center"
           >
-            <p className="text-4xl md:text-7xl font-bold tracking-tighter uppercase italic leading-[0.9] text-white">
+            <p className="max-md:text-[28px] max-md:leading-[1.1] max-md:tracking-tight text-4xl md:text-7xl font-bold tracking-tighter uppercase italic leading-[0.9] text-white">
               &quot;{testimonials[index].content}&quot;
             </p>
-            <div className="mt-12">
+            <div className="max-md:mt-8 mt-12">
               <p className="text-xl font-bold uppercase text-brand-yellow italic">{testimonials[index].name}</p>
               <p className="text-sm text-white/60 uppercase tracking-widest">{testimonials[index].role}</p>
             </div>
@@ -57,7 +57,7 @@ export const TestimonialSection = () => {
       </div>
 
       {/* Progress indicators */}
-      <div className="absolute bottom-24 left-8 md:left-24 flex gap-4">
+      <div className="absolute max-md:bottom-12 bottom-24 left-8 md:left-24 flex gap-4">
         {testimonials.map((_, i) => (
           <div 
             key={i} 
@@ -65,6 +65,22 @@ export const TestimonialSection = () => {
           />
         ))}
       </div>
+
+      <style jsx>{`
+        @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+          section {
+            height: 70vh !important;
+            padding-top: 2rem !important;
+            padding-bottom: 2rem !important;
+          }
+          p.text-4xl {
+            font-size: 3.5rem !important;
+          }
+          .h-\[400px\] {
+            height: 300px !important;
+          }
+        }
+      `}</style>
     </section>
   );
 };

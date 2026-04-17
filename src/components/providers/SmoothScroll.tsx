@@ -12,9 +12,23 @@ export const SmoothScroll = ({ children }: { children: ReactNode }) => {
       if ('scrollRestoration' in history) {
         history.scrollRestoration = 'manual';
       }
-      window.scrollTo(0, 0);
-      if ((window as any).lenis) {
-        (window as any).lenis.scrollTo(0, { immediate: true });
+
+      const hash = window.location.hash;
+      if (hash) {
+        // If there's a hash, wait a bit for the DOM to be ready then scroll to it
+        setTimeout(() => {
+          if ((window as any).lenis) {
+            (window as any).lenis.scrollTo(hash, { immediate: true });
+          } else {
+            const el = document.querySelector(hash);
+            if (el) el.scrollIntoView();
+          }
+        }, 100);
+      } else {
+        window.scrollTo(0, 0);
+        if ((window as any).lenis) {
+          (window as any).lenis.scrollTo(0, { immediate: true });
+        }
       }
     }
   }, [pathname]);

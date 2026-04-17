@@ -32,7 +32,7 @@ export const StatsSection = () => {
   ];
 
   return (
-    <section className="px-8 py-32 md:px-24 bg-brand-red text-white text-center">
+    <section className="max-md:pt-20 max-md:pb-12 px-8 py-32 md:px-24 bg-brand-red text-white text-center">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-12">
         {stats.map((stat, i) => (
           <div key={i}>
@@ -43,6 +43,15 @@ export const StatsSection = () => {
           </div>
         ))}
       </div>
+
+      <style jsx>{`
+        @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+          section {
+            padding-bottom: 3rem !important;
+            padding-top: 5rem !important;
+          }
+        }
+      `}</style>
     </section>
   );
 };
